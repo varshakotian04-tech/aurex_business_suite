@@ -123,7 +123,7 @@ class ReportsScreen extends StatelessWidget {
                       belowBarData: BarAreaData(
                         show: true,
                         color:
-                            Colors.white.withOpacity(0.05),
+                            Colors.white.withValues(alpha: 0.05),
                       ),
                       spots: controller.weeklyRevenue
                           .asMap()

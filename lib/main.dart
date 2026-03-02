@@ -4,9 +4,13 @@ import 'package:get/get.dart';
 import 'app/routes/app_pages.dart';
 import 'app/routes/app_routes.dart';
 import 'core/resources/color_resources.dart';
+import 'core/services/auth_service.dart';
+import 'core/services/storage_service.dart';
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await StorageService.init();
+  await Get.putAsync(() => AuthService().init());
   runApp(const AurexApp());
 }
 

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../core/resources/color_resources.dart';
+import '../../core/services/auth_service.dart';
 import 'inventory_controller.dart';
 
 class InventoryScreen extends StatelessWidget {
@@ -11,22 +12,29 @@ class InventoryScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(InventoryController());
+    final auth = Get.find<AuthService>();
 
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.transparent,
-        floatingActionButton: FloatingActionButton(
-          backgroundColor: Colors.white,
-          onPressed: () {},
-          child: const Icon(Icons.add, color: Colors.black),
-        ),
-        body: SingleChildScrollView(
-          padding:
-              const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
 
+        /// Only Admin can add product
+        floatingActionButton: auth.isAdmin
+            ? FloatingActionButton(
+                backgroundColor: Colors.white,
+                onPressed: () {},
+                child: const Icon(Icons.add,
+                    color: Colors.black),
+              )
+            : null,
+
+        body: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(
+              horizontal: 24, vertical: 24),
+          child: Column(
+            crossAxisAlignment:
+                CrossAxisAlignment.start,
+            children: [
               Text(
                 "Inventory",
                 style: GoogleFonts.poppins(
@@ -38,31 +46,9 @@ class InventoryScreen extends StatelessWidget {
 
               const SizedBox(height: 24),
 
-              /// Search
-              TextField(
-                style: const TextStyle(color: Colors.white),
-                onChanged: (value) =>
-                    controller.searchQuery.value = value,
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: const Color(0xFF1A1D24),
-                  hintText: "Search product...",
-                  hintStyle:
-                      const TextStyle(color: Colors.grey),
-                  contentPadding:
-                      const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 16),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20),
-                    borderSide: BorderSide.none,
-                  ),
-                ),
-              ),
-
-              const SizedBox(height: 28),
-
               Obx(() {
-                final items = controller.filteredProducts;
+                final items =
+                    controller.filteredProducts;
 
                 return ListView.separated(
                   shrinkWrap: true,
@@ -90,34 +76,43 @@ class InventoryScreen extends StatelessWidget {
                     }
 
                     return Container(
-                      padding: const EdgeInsets.all(20),
+                      padding:
+                          const EdgeInsets.all(20),
                       decoration: BoxDecoration(
-                        color: const Color(0xFF1A1D24),
+                        color:
+                            const Color(0xFF1A1D24),
                         borderRadius:
-                            BorderRadius.circular(24),
+                            BorderRadius.circular(
+                                24),
                       ),
                       child: Row(
                         mainAxisAlignment:
-                            MainAxisAlignment.spaceBetween,
+                            MainAxisAlignment
+                                .spaceBetween,
                         children: [
                           Column(
                             crossAxisAlignment:
-                                CrossAxisAlignment.start,
+                                CrossAxisAlignment
+                                    .start,
                             children: [
                               Text(
                                 product["name"],
-                                style: GoogleFonts.poppins(
+                                style: GoogleFonts
+                                    .poppins(
                                   fontSize: 16,
                                   fontWeight:
-                                      FontWeight.w500,
-                                  color: Colors.white,
+                                      FontWeight
+                                          .w500,
+                                  color:
+                                      Colors.white,
                                 ),
                               ),
-                              const SizedBox(height: 6),
+                              const SizedBox(
+                                  height: 6),
                               Text(
                                 "Stock: $stock",
-                                style:
-                                    GoogleFonts.poppins(
+                                style: GoogleFonts
+                                    .poppins(
                                   fontSize: 13,
                                   color:
                                       ColorResources
@@ -128,24 +123,33 @@ class InventoryScreen extends StatelessWidget {
                           ),
                           Container(
                             padding:
-                                const EdgeInsets.symmetric(
-                                    horizontal: 14,
-                                    vertical: 6),
-                            decoration: BoxDecoration(
+                                const EdgeInsets
+                                    .symmetric(
+                                        horizontal:
+                                            14,
+                                        vertical:
+                                            6),
+                            decoration:
+                                BoxDecoration(
                               color: badgeColor
-                                  .withOpacity(0.15),
+                                  .withOpacity(
+                                      0.15),
                               borderRadius:
-                                  BorderRadius.circular(
-                                      20),
+                                  BorderRadius
+                                      .circular(
+                                          20),
                             ),
                             child: Text(
                               badgeText,
                               style:
-                                  GoogleFonts.poppins(
+                                  GoogleFonts
+                                      .poppins(
                                 fontSize: 12,
                                 fontWeight:
-                                    FontWeight.w500,
-                                color: badgeColor,
+                                    FontWeight
+                                        .w500,
+                                color:
+                                    badgeColor,
                               ),
                             ),
                           ),
