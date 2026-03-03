@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../core/resources/color_resources.dart';
 import '../../core/services/auth_service.dart';
 import 'inventory_controller.dart';
 
@@ -46,7 +45,37 @@ class InventoryScreen extends StatelessWidget {
 
               const SizedBox(height: 24),
 
+              ///  ONE Obx only
               Obx(() {
+
+                if (controller.isLoading.value) {
+                  return const Padding(
+                    padding: EdgeInsets.only(top: 100),
+                    child: Center(
+                      child:
+                          CircularProgressIndicator(),
+                    ),
+                  );
+                }
+
+                if (controller
+                    .errorMessage.value
+                    .isNotEmpty) {
+                  return Padding(
+                    padding:
+                        const EdgeInsets.only(
+                            top: 100),
+                    child: Center(
+                      child: Text(
+                        controller
+                            .errorMessage.value,
+                        style: const TextStyle(
+                            color: Colors.red),
+                      ),
+                    ),
+                  );
+                }
+
                 final items =
                     controller.filteredProducts;
 
@@ -55,85 +84,95 @@ class InventoryScreen extends StatelessWidget {
                   physics:
                       const NeverScrollableScrollPhysics(),
                   itemCount: items.length,
-                  separatorBuilder: (_, __) =>
-                      const SizedBox(height: 16),
-                  itemBuilder: (context, index) {
-                    final product = items[index];
-                    final stock = product["stock"];
+                  separatorBuilder:
+                      (_, __) =>
+                          const SizedBox(
+                              height: 16),
+                  itemBuilder:
+                      (context, index) {
+                    final product =
+                        items[index];
 
                     Color badgeColor;
                     String badgeText;
 
-                    if (stock > 10) {
-                      badgeColor = Colors.green;
-                      badgeText = "In Stock";
-                    } else if (stock > 3) {
-                      badgeColor = Colors.orange;
-                      badgeText = "Low Stock";
+                    if (product.stock >
+                        10) {
+                      badgeColor =
+                          Colors.green;
+                      badgeText =
+                          "In Stock";
+                    } else if (product
+                            .stock >
+                        3) {
+                      badgeColor =
+                          Colors.orange;
+                      badgeText =
+                          "Low Stock";
                     } else {
-                      badgeColor = Colors.red;
-                      badgeText = "Critical";
+                      badgeColor =
+                          Colors.red;
+                      badgeText =
+                          "Critical";
                     }
 
                     return Container(
                       padding:
-                          const EdgeInsets.all(20),
-                      decoration: BoxDecoration(
+                          const EdgeInsets
+                              .all(20),
+                      decoration:
+                          BoxDecoration(
                         color:
-                            const Color(0xFF1A1D24),
+                            const Color(
+                                0xFF1A1D24),
                         borderRadius:
-                            BorderRadius.circular(
-                                24),
+                            BorderRadius
+                                .circular(
+                                    24),
                       ),
                       child: Row(
                         mainAxisAlignment:
                             MainAxisAlignment
                                 .spaceBetween,
                         children: [
-                          Column(
+                          Expanded(
+                         child: Column(
                             crossAxisAlignment:
                                 CrossAxisAlignment
                                     .start,
                             children: [
                               Text(
-                                product["name"],
-                                style: GoogleFonts
-                                    .poppins(
-                                  fontSize: 16,
-                                  fontWeight:
-                                      FontWeight
-                                          .w500,
-                                  color:
-                                      Colors.white,
+                                product.title,
+                                maxLines: product.title.length > 25 ? 2 : 1,
+                                overflow: TextOverflow.visible,
+                                style:const TextStyle(
+                                  fontSize:14,
+                                  fontWeight:FontWeight.w500,
+                                  color: Colors.white,
                                 ),
                               ),
                               const SizedBox(
                                   height: 6),
                               Text(
-                                "Stock: $stock",
-                                style: GoogleFonts
-                                    .poppins(
-                                  fontSize: 13,
-                                  color:
-                                      ColorResources
-                                          .textSecondary,
+                                "Stock: ${product.stock}",
+                                style:
+                                    const TextStyle(
+                                  fontSize:
+                                      13,
+                                  color: Colors
+                                      .grey,
                                 ),
                               ),
                             ],
                           ),
+                          ),
+
                           Container(
                             padding:
-                                const EdgeInsets
-                                    .symmetric(
-                                        horizontal:
-                                            14,
-                                        vertical:
-                                            6),
+                                const EdgeInsets.symmetric(horizontal:14,vertical:6),
                             decoration:
                                 BoxDecoration(
-                              color: badgeColor
-                                  .withOpacity(
-                                      0.15),
+                              color: badgeColor.withValues(alpha: 0.15),
                               borderRadius:
                                   BorderRadius
                                       .circular(
@@ -141,15 +180,10 @@ class InventoryScreen extends StatelessWidget {
                             ),
                             child: Text(
                               badgeText,
-                              style:
-                                  GoogleFonts
-                                      .poppins(
-                                fontSize: 12,
-                                fontWeight:
-                                    FontWeight
-                                        .w500,
-                                color:
-                                    badgeColor,
+                              style:TextStyle(
+                                fontSize:12,
+                                fontWeight:FontWeight.w500,
+                                color:badgeColor,
                               ),
                             ),
                           ),

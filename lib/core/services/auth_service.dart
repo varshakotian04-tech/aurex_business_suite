@@ -21,4 +21,6 @@ class AuthService extends GetxService {
   bool get isAdmin => role.value == "Admin";
   bool get isManager => role.value == "Manager";
   bool get isStaff => role.value == "Staff";
+
+  void logout() {}
 }

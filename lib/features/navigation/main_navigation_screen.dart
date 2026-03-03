@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../dashboard/dashboard_screen.dart';
+import '../inventory/inventory_screen.dart';
 import '../orders/orders_screen.dart';
 import '../reports/reports_screen.dart';
+import '../profile/profile_screen.dart';
 import 'main_navigation_controller.dart';
-import '../inventory/inventory_screen.dart';
-
 
 class MainNavigationScreen extends StatelessWidget {
   const MainNavigationScreen({super.key});
@@ -15,17 +15,25 @@ class MainNavigationScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.find<MainNavigationController>();
 
-    List<Widget> pages = [
-      
+    final pages = [
       const DashboardScreen(),
       const InventoryScreen(),
       const OrdersScreen(),
       const ReportsScreen(),
-      
+      const ProfileScreen(),
+    ];
+
+    final icons = [
+      Icons.dashboard_outlined,
+      Icons.inventory_2_outlined,
+      Icons.receipt_long_outlined,
+      Icons.bar_chart_outlined,
+      Icons.person_outline,
     ];
 
     return Scaffold(
       body: Obx(() => pages[controller.currentIndex.value]),
+
       bottomNavigationBar: Obx(
         () => Container(
           margin: const EdgeInsets.all(20),
@@ -36,31 +44,24 @@ class MainNavigationScreen extends StatelessWidget {
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: List.generate(4, (index) {
+            children: List.generate(icons.length, (index) {
               final isActive =
                   controller.currentIndex.value == index;
 
               return GestureDetector(
                 onTap: () => controller.changeTab(index),
                 child: AnimatedContainer(
-                  duration:
-                      const Duration(milliseconds: 300),
+                  duration: const Duration(milliseconds: 300),
                   padding: const EdgeInsets.symmetric(
                       horizontal: 18, vertical: 10),
                   decoration: BoxDecoration(
-                    borderRadius:
-                        BorderRadius.circular(20),
+                    borderRadius: BorderRadius.circular(20),
                     color: isActive
                         ? Colors.white
                         : Colors.transparent,
                   ),
                   child: Icon(
-                    [
-                      Icons.dashboard_outlined,
-                      Icons.inventory_2_outlined,
-                      Icons.receipt_long_outlined,
-                      Icons.bar_chart_outlined,
-                    ][index],
+                    icons[index],
                     color:
                         isActive ? Colors.black : Colors.grey,
                   ),
