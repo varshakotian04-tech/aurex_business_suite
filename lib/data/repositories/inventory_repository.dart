@@ -1,15 +1,16 @@
 import 'package:dio/dio.dart';
 
+import '../../core/resources/url_resources.dart';
 import '../../core/services/dio_service.dart';
 import '../models/product_model.dart';
 
 class InventoryRepository {
-  final Dio _dio = DioService().dio;
+  final Dio dio = DioService().dio;
 
   Future<List<ProductModel>> fetchProducts() async {
     try {
       final response =
-          await _dio.get("https://dummyjson.com/products");
+          await dio.get(UrlResources.products);
 
       final List products = response.data["products"];
 

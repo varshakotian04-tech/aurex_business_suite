@@ -3,7 +3,7 @@ import '../../data/models/product_model.dart';
 import '../../data/repositories/inventory_repository.dart';
 
 class InventoryController extends GetxController {
-  final InventoryRepository _repository =
+  final InventoryRepository repository =
       InventoryRepository();
 
   final RxList<ProductModel> products =
@@ -25,7 +25,7 @@ class InventoryController extends GetxController {
       errorMessage.value = "";
 
       final result =
-          await _repository.fetchProducts();
+          await repository.fetchProducts();
 
       products.value = result;
     } catch (e) {

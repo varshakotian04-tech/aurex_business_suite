@@ -1,0 +1,59 @@
+class OrderProductModel {
+  final int id;
+  final String title;
+  final double price;
+  final int quantity;
+  final double total;
+
+  OrderProductModel({
+    required this.id,
+    required this.title,
+    required this.price,
+    required this.quantity,
+    required this.total,
+  });
+
+  factory OrderProductModel.fromJson(Map<String, dynamic> json) {
+    return OrderProductModel(
+      id: json['id'],
+      title: json['title'],
+      price: (json['price'] as num).toDouble(),
+      quantity: json['quantity'],
+      total: (json['total'] as num).toDouble(),
+    );
+  }
+}
+
+class OrderModel {
+  final int id;
+  final double total;
+  final int totalProducts;
+  final int totalQuantity;
+  final List<OrderProductModel> products;
+  final DateTime date;
+  final String status;
+
+  OrderModel({
+    required this.id,
+    required this.total,
+    required this.totalProducts,
+    required this.totalQuantity,
+    required this.products,
+    required this.date,
+    required this.status,
+  });
+
+  factory OrderModel.fromJson(Map<String, dynamic> json) {
+    return OrderModel(
+      id: json['id'],
+      total: (json['total'] as num).toDouble(),
+      totalProducts: json['totalProducts'],
+      totalQuantity: json['totalQuantity'],
+      products: (json['products'] as List)
+          .map((e) => OrderProductModel.fromJson(e))
+          .toList(),
+      date: DateTime.now(), 
+      status: "Completed", 
+    );
+  }
+}

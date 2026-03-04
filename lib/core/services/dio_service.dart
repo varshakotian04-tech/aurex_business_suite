@@ -2,25 +2,25 @@ import 'package:dio/dio.dart';
 import '../resources/url_resources.dart';
 
 class DioService {
-  late Dio dio;
 
-  DioService() {
-    dio = Dio(
-      BaseOptions(
-        baseUrl: UrlResources.baseUrl,
-        connectTimeout: const Duration(seconds: 15),
-        receiveTimeout: const Duration(seconds: 15),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      ),
-    );
+  final Dio dio = Dio(
+    BaseOptions(
+      baseUrl: UrlResources.baseUrl,
+      connectTimeout: const Duration(seconds: 15),
+      receiveTimeout: const Duration(seconds: 15),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    ),
+  )
+  ..interceptors.add(
+    LogInterceptor(
+      request: true,
+      requestHeader: true,
+      requestBody: true,
+      responseBody: true,
+      error: true,
+    ),
+  );
 
-    dio.interceptors.add(
-      LogInterceptor(
-        requestBody: true,
-        responseBody: true,
-      ),
-    );
-  }
 }

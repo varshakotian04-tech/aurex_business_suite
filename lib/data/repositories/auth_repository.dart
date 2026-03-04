@@ -5,14 +5,15 @@ import '../models/user_model.dart';
 
 class AuthRepository {
 
-  final Dio _dio = DioService().dio;
+  final Dio dio = DioService().dio;
 
   Future<UserModel> login({
     required String username,
     required String password,
   }) async {
     try {
-      final response = await _dio.post(
+
+      final response = await dio.post(
         UrlResources.login,
         data: {
           "username": username,
@@ -21,20 +22,16 @@ class AuthRepository {
         },
       );
 
+      /// Success response
       return UserModel.fromJson(response.data);
 
-    } on DioException catch (_) {
+    } on DioException catch (e) {
 
-      /// 🔥 Fallback Demo Login
-      if (username == "admin" && password == "1234") {
-        return UserModel(
-          id: 1,
-          username: "admin",
-          token: "demo_token_123",
-        );
-      }
+      /// Extract API error message
+      final message =
+          e.response?.data["message"] ?? "Login failed";
 
-      throw Exception("Invalid credentials");
+      throw Exception(message);
     }
   }
 }

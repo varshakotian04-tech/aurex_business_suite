@@ -5,19 +5,19 @@ import '../../core/resources/constants.dart';
 import '../../app/routes/app_routes.dart';
 
 class SplashController extends GetxController {
-  final StorageService _storageService = StorageService();
+  final StorageService storageService = StorageService();
 
   @override
   void onInit() {
     super.onInit();
-    _startApp();
+    startApp();
   }
 
-  void _startApp() async {
+  void startApp() async {
     await Future.delayed(const Duration(seconds: 2));
 
     final token =
-        await _storageService.readData(AppConstants.tokenKey);
+        await storageService.readData(AppConstants.tokenKey);
 
     if (token != null && token.isNotEmpty) {
       Get.offAllNamed(AppRoutes.dashboard);

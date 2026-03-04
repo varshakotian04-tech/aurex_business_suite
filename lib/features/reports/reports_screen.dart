@@ -77,7 +77,7 @@ class ReportsScreen extends StatelessWidget {
                 Expanded(
                   child: buildSummaryCard(
                     "Total Sales",
-                    controller.totalSales,
+                    controller.totalRevenue,
                     prefix: "₹",
                   ),
                 ),
@@ -102,45 +102,70 @@ class ReportsScreen extends StatelessWidget {
             const SizedBox(height: 32),
 
             /// Revenue Chart
-            Container(
-              height: 220,
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: const Color(0xFF1A1D24),
-                borderRadius: BorderRadius.circular(28),
-              ),
-              child: LineChart(
-                LineChartData(
-                  gridData: FlGridData(show: false),
-                  titlesData: FlTitlesData(show: false),
-                  borderData: FlBorderData(show: false),
-                  lineBarsData: [
-                    LineChartBarData(
-                      isCurved: true,
-                      color: Colors.white,
-                      barWidth: 3,
-                      dotData: FlDotData(show: false),
-                      belowBarData: BarAreaData(
-                        show: true,
-                        color:
-                            Colors.white.withValues(alpha: 0.05),
-                      ),
-                      spots: controller.weeklyRevenue
-                          .asMap()
-                          .entries
-                          .map(
-                            (e) => FlSpot(
-                              e.key.toDouble(),
-                              e.value,
-                            ),
-                          )
-                          .toList(),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+           /// Revenue Chart
+Obx(() {
+  final chartData = controller.revenueChart;
 
+  if (chartData.isEmpty) {
+    return Container(
+      height: 220,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        color: const Color(0xFF1A1D24),
+        borderRadius: BorderRadius.circular(28),
+      ),
+      child: const Text(
+        "No data available",
+        style: TextStyle(color: Colors.grey),
+      ),
+    );
+  }
+
+  final maxValue =
+      chartData.reduce((a, b) => a > b ? a : b);
+
+  return Container(
+    height: 220,
+    padding: const EdgeInsets.all(16),
+    decoration: BoxDecoration(
+      color: const Color(0xFF1A1D24),
+      borderRadius: BorderRadius.circular(28),
+    ),
+    child: LineChart(
+      LineChartData(
+        minY: 0,
+        maxY: maxValue * 1.2,
+
+        gridData: FlGridData(show: false),
+        titlesData: FlTitlesData(show: false),
+        borderData: FlBorderData(show: false),
+
+        lineBarsData: [
+          LineChartBarData(
+            isCurved: true,
+            color: Colors.white,
+            barWidth: 3,
+            dotData: FlDotData(show: false),
+            belowBarData: BarAreaData(
+              show: true,
+              color: Colors.white.withValues(alpha: 0.05),
+            ),
+            spots: chartData
+                .asMap()
+                .entries
+                .map(
+                  (e) => FlSpot(
+                    e.key.toDouble(),
+                    e.value,
+                  ),
+                )
+                .toList(),
+          ),
+        ],
+      ),
+    ),
+  );
+}),
             const SizedBox(height: 20),
           ],
         ),

@@ -1,42 +1,53 @@
 import 'package:get/get.dart';
+import '../../data/models/order_model.dart';
+import '../../data/repositories/orders_repository.dart';
 
 class OrdersController extends GetxController {
-  final RxList<Map<String, dynamic>> orders = <Map<String, dynamic>>[].obs;
+  final OrdersRepository repository =
+      OrdersRepository();
+
+  final RxList<OrderModel> orders =
+      <OrderModel>[].obs;
+
+  final RxBool isLoading = false.obs;
+  final RxString errorMessage = "".obs;
 
   @override
   void onInit() {
     super.onInit();
-    loadOrders();
+    fetchOrders();
   }
 
-  void loadOrders() {
-    orders.value = [
-      {
-        "id": "#AUR001",
-        "customer": "John Doe",
-        "amount": 1200,
-        "status": "Pending",
-      },
-      {
-        "id": "#AUR002",
-        "customer": "Sarah Smith",
-        "amount": 5400,
-        "status": "Completed",
-      },
-    ];
-  }
+  Future<void> fetchOrders() async {
+    try {
+      isLoading.value = true;
+      errorMessage.value = "";
 
-  void addOrder(String customer, int amount) {
-    orders.insert(0, {
-      "id": "#AUR00${orders.length + 1}",
-      "customer": customer,
-      "amount": amount,
-      "status": "Pending",
-    });
-  }
+      final result =
+          await repository.fetchOrders();
 
-  void updateStatus(int index, String newStatus) {
-    orders[index]["status"] = newStatus;
-    orders.refresh();
+      orders.value = result;
+    } catch (e) {
+      errorMessage.value =
+          e.toString().replaceAll("Exception: ", "");
+    } finally {
+      isLoading.value = false;
+    }
   }
+  Future<void> createOrder() async {
+  try {
+    isLoading.value = true;
+    errorMessage.value = "";
+
+    final newOrder =
+        await repository.createOrder();
+
+    orders.insert(0, newOrder);
+  } catch (e) {
+    errorMessage.value =
+        e.toString().replaceAll("Exception: ", "");
+  } finally {
+    isLoading.value = false;
+  }
+}
 }
