@@ -29,11 +29,9 @@ class DashboardController extends GetxController {
       <String, int>{}.obs;
 
   ///  Cached lists
-  final RxList<OrderModel> cachedOrders =
-      <OrderModel>[].obs;
+  final RxList<OrderModel> cachedOrders = <OrderModel>[].obs;
 
-  final RxList<ProductModel> cachedProducts =
-      <ProductModel>[].obs;
+  final RxList<ProductModel> cachedProducts = <ProductModel>[].obs;
 
   @override
   void onInit() {

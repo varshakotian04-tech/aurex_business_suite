@@ -31,10 +31,7 @@ class DashboardScreen extends StatelessWidget {
     );
   }
 
-  /// ==========================
   /// ADMIN DASHBOARD
-  /// ==========================
-
   Widget adminDashboard(DashboardController controller) {
 
     return RefreshIndicator(
@@ -99,10 +96,8 @@ class DashboardScreen extends StatelessWidget {
     );
   }
 
-  /// ==========================
+ 
   /// MANAGER DASHBOARD
-  /// ==========================
-
   Widget managerDashboard(DashboardController controller) {
 
     return RefreshIndicator(
@@ -114,7 +109,7 @@ class DashboardScreen extends StatelessWidget {
           children: [
 
             Text(
-              "Manager Dashboard",
+              "Dashboard",
               style: GoogleFonts.poppins(
                 fontSize: 28,
                 fontWeight: FontWeight.w600,
@@ -234,9 +229,7 @@ class DashboardScreen extends StatelessWidget {
     );
   }
 
-  /// ==========================
   /// STAFF DASHBOARD
-  /// ==========================
 
   Widget staffDashboard(DashboardController controller) {
 
@@ -249,7 +242,7 @@ class DashboardScreen extends StatelessWidget {
           children: [
 
             Text(
-              "Staff Dashboard",
+              "Dashboard",
               style: GoogleFonts.poppins(
                 fontSize: 28,
                 fontWeight: FontWeight.w600,
@@ -333,10 +326,7 @@ class DashboardScreen extends StatelessWidget {
     );
   }
 
-  /// ==========================
   /// COMMON WIDGETS
-  /// ==========================
-
   Widget statCard(String title, String value) {
 
     return Container(
